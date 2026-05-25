@@ -14,3 +14,7 @@ target_include_directories(formatter_ex PRIVATE ${CMAKE_SOURCE_DIR}/formatter_li
 set_target_properties(formatter_ex PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
 )
+install(TARGETS formatter_ex
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib)
+install(FILES formatter_ex.h DESTINATION include)

@@ -6,7 +6,6 @@ platform:
   - x64
 
 configuration:
-  - Debug
   - Release
 
 before_build:
@@ -15,14 +14,15 @@ before_build:
   - cmake .. -G "Visual Studio 16 2019" -A x64
 
 build:
-  project: build/FormatterInc.sln
+  project: build/ALL_BUILD.vcxproj 
   parallel: true
   verbosity: minimal
 
-test: off
+after_build:
+  - cd build
+
+  - cpack -G WIX -C Release
 
 artifacts:
-  - path: build\bin\$(configuration)\*.exe
-    name: executables
-  - path: build\lib\$(configuration)\*.lib
-    name: libraries
+  - path: build/*.msi
+    name: installer
