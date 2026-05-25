@@ -10,4 +10,3 @@ target_include_directories(solver PRIVATE
     ${CMAKE_SOURCE_DIR}/formatter_lib
     ${CMAKE_SOURCE_DIR}/solver_lib
 )
-install(TARGETS solver RUNTIME DESTINATION bin)

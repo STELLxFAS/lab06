@@ -11,7 +11,3 @@ target_include_directories(solver_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 set_target_properties(solver_lib PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
 )
-install(TARGETS solver_lib
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib)
-install(FILES solver.h DESTINATION include)
