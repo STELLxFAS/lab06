@@ -31,15 +31,19 @@ jobs:
         run: |
           cd build
           cpack -G "DEB;RPM;TGZ;ZIP"
+          echo "=== Created packages ==="
+          ls -lh *.deb *.rpm *.tar.gz *.zip 2>/dev/null || echo "No packages found"
 
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v4
         with:
           name: linux-packages
-          path: build/*.deb
-            |build/*.rpm
-            |build/*.tar.gz
-            |build/*.zip
+          path: |
+            build/*.deb
+            build/*.rpm
+            build/*.tar.gz
+            build/*.zip
+          if-no-files-found: error
 
   build-macos:
     runs-on: macos-latest
@@ -61,12 +65,15 @@ jobs:
         run: |
           cd build
           cpack -G DragNDrop
+          echo "=== Created DMG ==="
+          ls -lh *.dmg 2>/dev/null || echo "No DMG found"
 
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v4
         with:
           name: macos-packages
           path: build/*.dmg
+          if-no-files-found: error
 
   create-release:
     needs: [build-linux, build-macos]
@@ -80,6 +87,15 @@ jobs:
         with:
           path: artifacts
 
+      - name: Show downloaded files
+        run: |
+          echo "=== Artifacts structure ==="
+          find artifacts -type f
+          echo "=== Linux packages ==="
+          ls -lh artifacts/linux-packages/ 2>/dev/null || echo "No linux packages"
+          echo "=== macOS packages ==="
+          ls -lh artifacts/macos-packages/ 2>/dev/null || echo "No macOS packages"
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
@@ -87,7 +103,6 @@ jobs:
             artifacts/linux-packages/*
             artifacts/macos-packages/*
           draft: false
-          make_latest: true
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
