@@ -74,7 +74,6 @@ jobs:
         with:
           files: build/*.dmg
           fail_on_unmatched_files: false
-          draft: true
           make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
